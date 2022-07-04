@@ -63,8 +63,8 @@ const Feed = ({ feed }) => {
           ref={inputRef}
           onChange={(e) => (inputRef.currnet = e.target.value)}
           onKeyPress={(e) => {
-            if (e.target === 'Enter') {
-              PostComment();
+            if (e.key === 'Enter') {
+              return PostComment();
             }
           }}
         />

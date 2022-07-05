@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { EmailValidation, PasswordValidation } from '../utils/validation';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { theme } from 'styles/theme';
 
 const Login = () => {
   const idInputRef = useRef('');
@@ -12,10 +13,9 @@ const Login = () => {
     password: undefined,
     isVerfied: undefined,
   });
-  const testId = { id: 'wanted@gmail.com', password: 'Wanted123!' }; //일치 여부 확인용 등록아이디
+  const testId = { id: 'wanted@gmail.com', password: 'Wanted123!' };
 
   function CheckValidation(e, result) {
-    // 유효성검사 - 아이디, 패스워드
     setIsValid({ ...isValid, [e.target.name]: result });
   }
 
@@ -54,7 +54,6 @@ const Login = () => {
           type="button"
           validation={isValid.isVerfied}
           onClick={() => {
-            //TODO: validation 추가
             if (
               isValid.id &&
               isValid.password &&
@@ -100,7 +99,8 @@ const Container = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: ${(props) => (props.validation ? '#1964f9' : '#9ed8ff')};
+  background-color: ${(props) =>
+    props.validation ? theme.color.primary : theme.color.disabled};
   color: white;
   border: 0;
   cursor: pointer;

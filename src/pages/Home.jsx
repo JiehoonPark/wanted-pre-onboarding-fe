@@ -23,8 +23,8 @@ const Home = () => {
   return (
     <Container>
       <main>
-        {feeds?.map((feed, key) => {
-          return <Feed feed={feed} key={key} />;
+        {feeds?.map((feedInfo, key) => {
+          return <Feed feedInfo={feedInfo} key={key} />;
         })}
       </main>
     </Container>

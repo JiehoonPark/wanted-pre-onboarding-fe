@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Comment from './Comment';
 import { useState, useRef } from 'react';
-import { BsThreeDots } from 'react-icons/bs';
 import { theme } from 'styles/theme';
+import { BsThreeDots } from 'react-icons/bs';
 import {
   FaCircle,
   FaRegHeart,
@@ -13,26 +13,26 @@ import {
   FaRegBookmark,
 } from 'react-icons/fa';
 
-const Feed = ({ feed }) => {
-  const { nickName, image, comments } = feed;
+const Feed = ({ feedInfo }) => {
+  const { nickName, image, comments } = feedInfo;
   const [commentList, setCommentList] = useState(comments);
   const inputRef = useRef('');
-  const myId = window.localStorage.getItem('id').split('@')[0].toString();
-  const [loading, setLoading] = useState(true);
+  const [isImageReady, setIsImageReady] = useState(false);
+  const loginId = window.localStorage.getItem('id').split('@')[0].toString();
 
   function PostComment() {
     if (inputRef.current.value === '') return;
-    setCommentList([
-      ...commentList,
-      { nickName: myId, content: inputRef.currnet },
+    setCommentList((prev) => [
+      ...prev,
+      { nickName: loginId, content: inputRef.currnet },
     ]);
     inputRef.current.value = '';
     inputRef.current.focus();
   }
 
   return (
-    <Container isLoaded={loading}>
-      <div className="feeds_header">
+    <Container isImageReady={isImageReady}>
+      <div className="header">
         <div className="profile">
           <FaCircle size={35} />
           <div>{nickName}</div>
@@ -40,11 +40,11 @@ const Feed = ({ feed }) => {
         <BsThreeDots size={15} />
       </div>
 
-      <div className="feeds_picture">
-        <img src={image} onLoad={() => setLoading(false)} />
+      <div className="picture">
+        <img src={image} onLoad={() => setIsImageReady(true)} />
       </div>
 
-      <div className="feeds_widget">
+      <div className="widget">
         <div className="icons">
           <FaRegHeart size={20} />
           <FaRegComment size={20} />
@@ -53,22 +53,18 @@ const Feed = ({ feed }) => {
         <FaRegBookmark size={20} />
       </div>
 
-      <div className="feeds_like">좋아요 0 개 </div>
+      <div className="like">좋아요 0 개 </div>
 
-      {commentList?.map((comment, key) => {
-        return <Comment comment={comment} key={key} />;
+      {commentList?.map((commentInfo, key) => {
+        return <Comment commentInfo={commentInfo} key={key} />;
       })}
 
-      <div className="feeds_post-comment">
-        <FaRegSmile size={20} className="feeds_post-comment_icon" />
+      <div className="post-comment">
+        <FaRegSmile size={20} className="post-comment_icon" />
         <input
           ref={inputRef}
           onChange={(e) => (inputRef.currnet = e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
-              return PostComment();
-            }
-          }}
+          onKeyPress={(e) => e.key === 'Enter' && PostComment()}
         />
         <button onClick={PostComment}>게시</button>
       </div>
@@ -79,7 +75,7 @@ const Feed = ({ feed }) => {
 export default Feed;
 
 const Container = styled.div`
-  display: ${(props) => (props.isLoading ? 'none' : 'flex')};
+  display: ${(props) => (props.isImageReady ? 'flex' : 'none')};
   flex-direction: column;
   border: 0.1px solid ${theme.color.border};
   border-radius: 5px;
@@ -87,12 +83,12 @@ const Container = styled.div`
   > div,
   input {
     width: 100%;
-    :not(:nth-child(2)) {
+    :not(.picture) {
       padding: 5px;
     }
   }
 
-  .feeds_header {
+  .header {
     display: flex;
     padding: 5px;
     height: 50px;
@@ -105,7 +101,7 @@ const Container = styled.div`
     }
   }
 
-  .feeds_picture {
+  .picture {
     display: flex;
     justify-content: center;
     margin: 5px 0;
@@ -120,7 +116,7 @@ const Container = styled.div`
     }
   }
 
-  .feeds_widget {
+  .widget {
     display: flex;
     justify-content: space-between;
     .icons {
@@ -129,11 +125,11 @@ const Container = styled.div`
     }
   }
 
-  .feeds_like {
+  .like {
     margin: 10px 0px 20px 0px;
   }
 
-  .feeds_post-comment {
+  .post-comment {
     display: flex;
     align-items: center;
     border-top: 0.1px solid lightgrey;

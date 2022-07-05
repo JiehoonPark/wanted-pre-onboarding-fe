@@ -13,10 +13,11 @@ const Login = () => {
     password: undefined,
     isVerfied: undefined,
   });
-  const testId = { id: 'wanted@gmail.com', password: 'Wanted123!' };
+  const testUserInfo = { id: 'wanted@gmail.com', password: 'Wanted123!' };
 
-  function CheckValidation(e, result) {
-    setIsValid({ ...isValid, [e.target.name]: result });
+  function CheckValidation(event, result) {
+    if (isValid[event.target.name] === result) return;
+    setIsValid({ ...isValid, [event.target.name]: result });
   }
 
   useEffect(() => {
@@ -29,25 +30,25 @@ const Login = () => {
 
   return (
     <Container>
-      <div className="header_section">Wanted Instagram</div>
+      <div className="header">Wanted Instagram</div>
       <main>
         <Input
           placeholder="사용자 이름, 또는 이메일"
           name="id"
           ref={idInputRef}
           validation={isValid.id}
-          onChange={(e) => {
-            idInputRef.current = e.target.value;
-            CheckValidation(e, EmailValidation(e.target.value));
+          onChange={(event) => {
+            idInputRef.current = event.target.value;
+            CheckValidation(event, EmailValidation(event.target.value));
           }}
         />
         <Input
           placeholder="비밀번호"
           name="password"
           validation={isValid.password}
-          onChange={(e) => {
-            passwordInputRef.current = e.target.value;
-            CheckValidation(e, PasswordValidation(e.target.value));
+          onChange={(event) => {
+            passwordInputRef.current = event.target.value;
+            CheckValidation(event, PasswordValidation(event.target.value));
           }}
         />
         <Button
@@ -57,8 +58,8 @@ const Login = () => {
             if (
               isValid.id &&
               isValid.password &&
-              idInputRef.current === testId.id &&
-              passwordInputRef.current === testId.password
+              idInputRef.current === testUserInfo.id &&
+              passwordInputRef.current === testUserInfo.password
             ) {
               window.localStorage.setItem('id', idInputRef.current);
               window.location.replace('/');
@@ -75,7 +76,7 @@ const Login = () => {
 export default Login;
 
 const Container = styled.div`
-  .header_section {
+  .header {
     padding: 100px;
     text-align: center;
     font-weight: bold;

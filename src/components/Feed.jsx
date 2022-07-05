@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Comment from './Comment';
 import { useState, useRef } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
+import { theme } from 'styles/theme';
 import {
   FaCircle,
   FaRegHeart,
@@ -20,6 +21,7 @@ const Feed = ({ feed }) => {
   const [loading, setLoading] = useState(true);
 
   function PostComment() {
+    if (inputRef.current.value === '') return;
     setCommentList([
       ...commentList,
       { nickName: myId, content: inputRef.currnet },
@@ -77,9 +79,9 @@ const Feed = ({ feed }) => {
 export default Feed;
 
 const Container = styled.div`
-  display: ${(props) => (props.isLoaded ? 'none' : 'flex')};
+  display: ${(props) => (props.isLoading ? 'none' : 'flex')};
   flex-direction: column;
-  border: 0.1px solid lightgrey;
+  border: 0.1px solid ${theme.color.border};
   border-radius: 5px;
   margin-top: 50px;
   > div,
@@ -112,7 +114,7 @@ const Container = styled.div`
       max-width: 100%;
       height: auto;
       width: auto;
-      @media (max-width: 767px) {
+      @media ${theme.deviceSize.max.mobile} {
         width: 100%;
       }
     }

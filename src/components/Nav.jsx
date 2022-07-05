@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { FaHome, FaPlusSquare } from 'react-icons/fa';
+import { theme } from 'styles/theme';
 
 const Nav = () => {
   const location = useLocation();
   if (location.pathname === '/login') return null;
+
   return (
     <Container>
       <main>
@@ -48,7 +50,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-around;
     margin: 0 auto;
-    @media (max-width: 767px) {
+    @media ${theme.deviceSize.max.mobile} {
       justify-content: space-between;
     }
     .nav_logo {
@@ -65,7 +67,7 @@ const Container = styled.div`
       border-radius: 5px;
       font-weight: bold;
       color: grey;
-      @media (max-width: 767px) {
+      @media ${theme.deviceSize.max.mobile} {
         display: none;
       }
     }

@@ -3,21 +3,20 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Feed from '../components/Feed';
-import axios from 'axios';
 import { useEffect } from 'react';
+import { getFeeds } from 'api/feeds';
 
 const Home = () => {
   const isLogin = window.localStorage.getItem('id');
   if (!isLogin) return <Navigate to="/login" />;
-
   const [feeds, setFeeds] = useState(null);
 
   useEffect(() => {
-    async function getFeeds() {
-      const res = await axios.get('http://localhost:3001/Feeds');
-      setFeeds(res.data);
+    async function fetchFeeds() {
+      const response = await getFeeds();
+      setFeeds(response);
     }
-    getFeeds();
+    fetchFeeds();
   }, []);
 
   return (

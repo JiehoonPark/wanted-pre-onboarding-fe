@@ -14,7 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     async function getFeeds() {
-      const res = await axios.get('/mockFeeds.json');
+      const res = await axios.get('http://localhost:3001/Feeds');
       setFeeds(res.data);
     }
     getFeeds();
